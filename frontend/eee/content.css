@@ -1,0 +1,159 @@
+/* 智能中英词汇替换插件样式 */
+
+:root {
+  --eee-primary-color: #3b82f6;
+  --eee-primary-hover: #1d4ed8;
+  --eee-background-hover: #dbeafe;
+  --eee-border-color: #93c5fd;
+  --eee-text-color: #1e293b;
+  --eee-phonetic-color: #64748b;
+  --eee-chinese-color: #6b7280;
+  --eee-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --eee-border-radius: 4px;
+  --eee-transition: all 0.2s ease;
+}
+
+/* 翻译词汇样式 */
+.eee-translated-word {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--eee-primary-color);
+  font-weight: 500;
+  border-bottom: 1px dashed var(--eee-border-color);
+  transition: var(--eee-transition);
+  padding: 0 2px;
+  margin: 0 1px;
+}
+
+.eee-translated-word:hover {
+  color: var(--eee-primary-hover);
+  border-bottom-color: var(--eee-primary-hover);
+  background-color: var(--eee-background-hover);
+  border-radius: var(--eee-border-radius);
+}
+
+/* 英文部分 */
+.eee-english {
+  font-weight: 600;
+}
+
+/* 音标部分 */
+.eee-phonetic {
+  font-size: 0.8em;
+  color: var(--eee-phonetic-color);
+  margin-left: 2px;
+  font-style: italic;
+}
+
+/* 中文注释部分 */
+.eee-chinese {
+  font-size: 0.8em;
+  color: var(--eee-chinese-color);
+  margin-left: 2px;
+}
+
+/* 音标提示框 */
+.eee-translated-word::after {
+  content: attr(data-phonetic);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--eee-text-color);
+  color: white;
+  padding: 4px 8px;
+  border-radius: var(--eee-border-radius);
+  font-size: 0.7em;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: var(--eee-shadow);
+}
+
+.eee-translated-word:hover::after {
+  opacity: 1;
+}
+
+/* 降级翻译样式 */
+.eee-fallback {
+  background-color: #fef3c7;
+  border-bottom-color: #f59e0b;
+}
+
+.eee-fallback:hover {
+  background-color: #fde68a;
+}
+
+/* 高置信度翻译 */
+.eee-translated-word[data-confidence="0.9"] {
+  border-bottom-style: solid;
+}
+
+/* 低置信度翻译 */
+.eee-translated-word[data-confidence="0.7"] {
+  opacity: 0.8;
+  border-bottom-style: dotted;
+}
+
+/* 动画效果 */
+@keyframes eee-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.eee-translated-word {
+  animation: eee-fadeIn 0.3s ease-out;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .eee-translated-word::after {
+    font-size: 0.6em;
+    padding: 2px 6px;
+  }
+  
+  .eee-phonetic,
+  .eee-chinese {
+    font-size: 0.7em;
+  }
+}
+
+/* 深色主题支持 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --eee-primary-color: #60a5fa;
+    --eee-primary-hover: #3b82f6;
+    --eee-background-hover: #1e3a8a;
+    --eee-border-color: #3b82f6;
+    --eee-text-color: #f1f5f9;
+    --eee-phonetic-color: #94a3b8;
+    --eee-chinese-color: #9ca3af;
+  }
+  
+  .eee-translated-word::after {
+    background-color: var(--eee-text-color);
+    color: var(--eee-text-color);
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .eee-translated-word {
+    color: black !important;
+    border-bottom: 1px solid black !important;
+    background: none !important;
+  }
+  
+  .eee-translated-word::after {
+    display: none !important;
+  }
+}
