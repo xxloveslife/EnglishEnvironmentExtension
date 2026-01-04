@@ -1,0 +1,119 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.virtualenv/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# FastAPI / uvicorn
+*.pid
+
+# Environment variables
+.env
+.env.dev
+.env.prod
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Redis dump
+dump.rdb
+
+# Alembic
+# Keep alembic/ directory but ignore generated files if needed
+# alembic/versions/*.pyc
+
+# Operating System
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.tmp
+*.temp
+
+# Python debugging
+.python-version
+.pytype/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Project specific
+assets/upload/*
+!assets/upload/.gitkeep
+
+# AI-generated documentation
+doc/ai-generated/
+**/ai-generated/
+
+# Claude Code temporary files
+.claude/

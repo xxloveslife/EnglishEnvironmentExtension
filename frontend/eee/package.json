@@ -28,7 +28,9 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://*/*",
+      "http://127.0.0.1:9099/*",
+      "http://localhost:9099/*"
     ]
   }
 }

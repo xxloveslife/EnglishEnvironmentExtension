@@ -1,4 +1,4 @@
-import { IObserver } from '../utils/types'
+import type { IObserver } from '../utils/types'
 import { debounce } from '../utils/throttle'
 import { logger } from '../utils/logger'
 

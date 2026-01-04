@@ -4,7 +4,7 @@ export const generateNodeId = (node: Node): string => {
   if (!parent) return 'root'
   
   const siblings = Array.from(parent.childNodes)
-  const index = siblings.indexOf(node)
+  const index = siblings.indexOf(node as ChildNode)
   return `${getDomPath(parent)}-text-${index}`
 }
 
@@ -79,11 +79,16 @@ export const isChineseText = (text: string): boolean => {
 
 export const hasVisibleText = (element: Element): boolean => {
   const style = window.getComputedStyle(element)
+  const el = element as HTMLElement
   return (
     style.display !== 'none' &&
     style.visibility !== 'hidden' &&
     style.opacity !== '0' &&
-    element.offsetWidth > 0 &&
-    element.offsetHeight > 0
+    el.offsetWidth > 0 &&
+    el.offsetHeight > 0
   )
 }
+
+
+
+

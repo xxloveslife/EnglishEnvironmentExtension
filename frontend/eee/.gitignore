@@ -31,3 +31,10 @@ dist/
 
 # typescript
 .tsbuildinfo
+
+# AI-generated documentation
+doc/ai-generated/
+**/ai-generated/
+
+# Claude Code temporary files
+.claude/

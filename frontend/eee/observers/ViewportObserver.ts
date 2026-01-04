@@ -1,4 +1,4 @@
-import { IObserver } from '../utils/types'
+import type { IObserver } from '../utils/types'
 import { logger } from '../utils/logger'
 
 export class ViewportObserver implements IObserver {

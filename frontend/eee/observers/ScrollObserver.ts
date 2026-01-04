@@ -1,4 +1,4 @@
-import { IObserver } from '../utils/types'
+import type { IObserver } from '../utils/types'
 import { throttle } from '../utils/throttle'
 import { logger } from '../utils/logger'
 
@@ -7,10 +7,11 @@ export class ScrollObserver implements IObserver {
   private isActive = false
   private throttledHandler: (() => void) | null = null
   
-  constructor(private throttleDelay: number = 500) {
+  constructor(private throttleDelay: number = 600) {
+    // 使用 trailing-only 模式：只在滚动停止后触发，避免首尾双触发
     this.throttledHandler = throttle(() => {
       this.emit('scroll')
-    }, this.throttleDelay)
+    }, this.throttleDelay, { leading: false, trailing: true })
   }
   
   start(): void {

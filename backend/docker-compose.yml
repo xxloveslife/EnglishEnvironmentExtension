@@ -1,0 +1,114 @@
+version: '3.8'
+
+services:
+  # MySQL数据库服务
+  mysql:
+    image: mysql:8.0
+    container_name: ruoyi-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysqlroot
+      MYSQL_DATABASE: ruoyi-fastapi
+      MYSQL_USER: ruoyi
+      MYSQL_PASSWORD: ruoyi123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql/ruoyi-fastapi.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    networks:
+      - ruoyi-network
+
+  # Redis缓存服务
+  redis:
+    image: redis:7-alpine
+    container_name: ruoyi-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - ruoyi-network
+
+  # FastAPI后端服务
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ruoyi-backend
+    restart: always
+    ports:
+      - "9099:9099"
+    environment:
+      # 应用配置
+      APP_ENV: prod
+      APP_NAME: RuoYi-FastAPI
+      APP_HOST: 0.0.0.0
+      APP_PORT: 9099
+      APP_ROOT_PATH: /dev-api
+      
+      # 数据库配置
+      DB_TYPE: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: ruoyi
+      DB_PASSWORD: ruoyi123
+      DB_DATABASE: ruoyi-fastapi
+      DB_ECHO: false
+      
+      # Redis配置
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DATABASE: 2
+      
+      # JWT配置
+      JWT_SECRET_KEY: b01c66dc2c58dc6a0aabfe2144256be36226de378bf87f72c0c795dda67f4d55
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRE_MINUTES: 1440
+    volumes:
+      - ./vf_admin:/app/vf_admin
+      - ./logs:/app/logs
+      - ./caches:/app/caches
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ruoyi-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9099/dev-api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx反向代理服务
+  nginx:
+    image: nginx:alpine
+    container_name: ruoyi-nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - backend
+    networks:
+      - ruoyi-network
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  ruoyi-network:
+    driver: bridge
+
